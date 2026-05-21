@@ -1,0 +1,28 @@
+{
+  "folders": {
+    "Compleanni": {
+      "id": "1gQCSrGk2xp3L2zgx5kr5l_4IPpQuQlGR",
+      "description": "Foto di compleanni"
+    },
+    "Ritratti": {
+      "id": "1OLXYFnS--UYaiCZrgjjnvaGJNF8qmTzM",
+      "description": "Ritratti fotografici"
+    },
+    "Varie": {
+      "id": "1-wiNOvLWie1ElFw9l2VPBnuWQew33r_S",
+      "description": "Foto varie e paesaggi"
+    },
+    "Esibizioni": {
+      "id": "1oHkGhSFLjzzKSuMurWuu8TDt6pt0QhUQ",
+      "description": "Foto di esibizioni e eventi"
+    },
+    "Legacy": {
+      "id": "1oKjR_sff_pNEcgO7xvm-q5aklhv5ZQTh",
+      "description": "Foto di eventi passati e progetti precedenti"
+    }
+  },
+  "notes": {
+    "how_to_find_folder_id": "Apri la cartella su Google Drive. L'URL sarà: https://drive.google.com/drive/folders/FOLDER_ID",
+    "folder_structure": "Il tuo drive deve contenere cartelle con nomi esatti (maiuscole/minuscole importante): Compleanni, Ritratti, Varie, Esibizioni"
+  }
+}

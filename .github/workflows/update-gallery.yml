@@ -1,0 +1,60 @@
+name: 🔄 Update Gallery Config
+
+on:
+  # Rigenera ogni giorno a mezzanotte (UTC)
+  schedule:
+    - cron: '0 0 * * *'
+  
+  # Rigenera quando fai push di questo file
+  push:
+    paths:
+      - 'generate_gallery_config.py'
+      - 'gallery_folders.json'
+      - '.github/workflows/update-gallery.yml'
+  
+  # Permetti di attivare manualmente da GitHub
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update-gallery:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: 🐍 Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      
+      - name: 📦 Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install google-auth-oauthlib google-auth-httplib2 google-api-python-client
+      
+      - name: 🔐 Setup Google Drive authentication
+        env:
+          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_DRIVE_CREDENTIALS }}
+        run: |
+          if [ -z "$GOOGLE_CREDENTIALS" ]; then
+            echo "⚠️ GOOGLE_DRIVE_CREDENTIALS non configurato nei secrets"
+            exit 0
+          fi
+          echo "$GOOGLE_CREDENTIALS" > credentials.json
+      
+      - name: 🚀 Generate gallery config
+        run: python generate_gallery_config.py
+        continue-on-error: true
+      
+      - name: 📝 Commit and push changes
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: '🔄 Update gallery config from Google Drive'
+          commit_options: '--no-verify'
+          file_pattern: 'gallery-config.json token.json'
+          skip_fetch: false
+          skip_checkout: false
