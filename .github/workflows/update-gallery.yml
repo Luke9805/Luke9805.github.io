@@ -36,17 +36,20 @@ jobs:
           pip install --upgrade pip
           pip install google-auth-oauthlib google-auth-httplib2 google-api-python-client
       
-      - name: 🔐 Setup Google Drive authentication
+      - name: 🔐 Setup Google Service Account
         env:
-          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_DRIVE_CREDENTIALS }}
+          GOOGLE_SERVICE_ACCOUNT: ${{ secrets.GOOGLE_SERVICE_ACCOUNT }}
         run: |
-          if [ -z "$GOOGLE_CREDENTIALS" ]; then
-            echo "⚠️ GOOGLE_DRIVE_CREDENTIALS non configurato nei secrets"
-            exit 0
+          if [ -z "$GOOGLE_SERVICE_ACCOUNT" ]; then
+            echo "❌ GOOGLE_SERVICE_ACCOUNT non configurato nei secrets"
+            exit 1
           fi
-          echo "$GOOGLE_CREDENTIALS" > credentials.json
+          # Store in environment variable for the Python script
+          echo "Service account configured from GitHub secret"
       
       - name: 🚀 Generate gallery config
+        env:
+          GOOGLE_SERVICE_ACCOUNT: ${{ secrets.GOOGLE_SERVICE_ACCOUNT }}
         run: python generate_gallery_config.py
         continue-on-error: true
       
@@ -55,6 +58,6 @@ jobs:
         with:
           commit_message: '🔄 Update gallery config from Google Drive'
           commit_options: '--no-verify'
-          file_pattern: 'gallery-config.json token.json'
+          file_pattern: 'gallery-config.json'
           skip_fetch: false
           skip_checkout: false

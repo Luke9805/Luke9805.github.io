@@ -3,55 +3,56 @@
 Script to generate gallery-config.json from Google Drive folders.
 Requires: pip install google-auth-oauthlib google-auth-httplib2 google-api-python-client
 
-First time setup:
-1. Create a Google Cloud project: https://console.cloud.google.com/
-2. Enable Google Drive API
-3. Create OAuth 2.0 credentials (Desktop app)
-4. Download the credentials as JSON and save as 'credentials.json'
+Setup:
+1. Create a Service Account: https://console.cloud.google.com/
+2. Download the JSON key and save it as a secret in GitHub
+3. The script will use either the local JSON file or the GOOGLE_SERVICE_ACCOUNT environment variable
 """
 
 import json
 import os
-from google.auth.transport.requests import Request
-from google.oauth2.credentials import Credentials
-from google_auth_oauthlib.flow import InstalledAppFlow
+from google.oauth2 import service_account
 from google.api_core.exceptions import GoogleAPICallError
 from googleapiclient.discovery import build
 
 
 SCOPES = ['https://www.googleapis.com/auth/drive.readonly']
-CREDENTIALS_FILE = 'credentials.json'
-TOKEN_FILE = 'token.json'
+SERVICE_ACCOUNT_FILE = 'service-account.json'
 CONFIG_FILE = 'gallery_folders.json'
 
 
 def authenticate():
-    """Authenticate with Google Drive API."""
-    creds = None
-
-    # Load existing token if available
-    if os.path.exists(TOKEN_FILE):
-        creds = Credentials.from_authorized_user_file(TOKEN_FILE, SCOPES)
-
-    # If no valid credentials, create new ones
-    if not creds or not creds.valid:
-        if creds and creds.expired and creds.refresh_token:
-            creds.refresh(Request())
-        else:
-            if not os.path.exists(CREDENTIALS_FILE):
-                raise FileNotFoundError(
-                    f"❌ {CREDENTIALS_FILE} not found!\n"
-                    "Visit https://console.cloud.google.com/ to create credentials"
-                )
-            flow = InstalledAppFlow.from_client_secrets_file(
-                CREDENTIALS_FILE, SCOPES
-            )
-            creds = flow.run_local_server(port=0)
-
-        # Save token for next time
-        with open(TOKEN_FILE, 'w') as token:
-            token.write(creds.to_json())
-
+    """Authenticate with Google Drive API using Service Account."""
+    
+    # Check if service account JSON exists locally
+    service_account_json = None
+    
+    if os.path.exists(SERVICE_ACCOUNT_FILE):
+        # Load from local file
+        with open(SERVICE_ACCOUNT_FILE, 'r') as f:
+            service_account_json = json.load(f)
+    else:
+        # Try to load from environment variable (for GitHub Actions)
+        env_credentials = os.environ.get('GOOGLE_SERVICE_ACCOUNT')
+        if env_credentials:
+            try:
+                service_account_json = json.loads(env_credentials)
+            except json.JSONDecodeError as e:
+                print(f"❌ Failed to parse GOOGLE_SERVICE_ACCOUNT environment variable: {e}")
+                raise
+    
+    if not service_account_json:
+        raise FileNotFoundError(
+            f"❌ Service account credentials not found!\n"
+            f"Place '{SERVICE_ACCOUNT_FILE}' in the current directory or set GOOGLE_SERVICE_ACCOUNT environment variable"
+        )
+    
+    # Create credentials from service account
+    creds = service_account.Credentials.from_service_account_info(
+        service_account_json, 
+        scopes=SCOPES
+    )
+    
     return build('drive', 'v3', credentials=creds)
 
 

@@ -6,6 +6,7 @@ env/
 # Credenziali Google Drive (sensibili!)
 credentials.json
 client_secret_*.json
+service-account.json
 
 # Token di autenticazione
 token.json
