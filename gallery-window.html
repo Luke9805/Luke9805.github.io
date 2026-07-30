@@ -227,6 +227,24 @@
         let currentCategory = '';
         let currentImageIndex = 0;
         let categoryImages = [];
+        const preloadedImages = {}; // Cache per il preloading asincrono
+
+        // Funzione per precaricare in background le prossime N immagini
+        function preloadNextImages(currentIndex, count = 5) {
+            if (categoryImages.length === 0) return;
+            
+            for (let i = 1; i <= count; i++) {
+                const nextIndex = (currentIndex + i) % categoryImages.length;
+                const fileId = categoryImages[nextIndex].fileId;
+                
+                // Se non l'abbiamo già precaricata, avvia il download asincrono
+                if (!preloadedImages[fileId]) {
+                    const img = new Image();
+                    img.src = getDriveImageUrl(fileId);
+                    preloadedImages[fileId] = img;
+                }
+            }
+        }
 
         // Funzione per ottenere il parametro dalla URL
         function getQueryParam(param) {
@@ -285,6 +303,9 @@
             img.alt = `${currentCategory} - ${currentImageIndex + 1}`;
 
             document.getElementById('counter').textContent = `${currentImageIndex + 1} / ${categoryImages.length}`;
+            
+            // Precarica le 5 immagini successive in modo asincrono
+            preloadNextImages(currentImageIndex, 5);
         }
 
         // Mostra messaggio di errore
