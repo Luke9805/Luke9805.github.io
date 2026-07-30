@@ -605,9 +605,8 @@
         
         // Crea URL di Google Drive dal file ID
         function getDriveImageUrl(fileId) {
-            // Utilizziamo wsrv.nl come CDN proxy per implementare un sistema di caching 
-            // e superare le limitazioni di Google Drive per il caricamento delle immagini
-            return `https://wsrv.nl/?url=lh3.googleusercontent.com/d/${fileId}&w=1200&fit=contain`;
+            // Utilizza link diretto a Google Drive (il CDN wsrv.nl viene bloccato da Google)
+            return `https://lh3.googleusercontent.com/d/${fileId}`;
         }
         
         // Carica la configurazione della galleria
@@ -636,8 +635,8 @@
                     const firstImageId = galleryConfig[category][0].fileId;
                     const imgElement = card.querySelector('img');
                     if (imgElement && firstImageId) {
-                        // Utilizza l'immagine aggiornata da Drive con ritaglio quadrato 
-                        imgElement.src = `https://wsrv.nl/?url=lh3.googleusercontent.com/d/${firstImageId}&w=600&fit=cover`;
+                        // Utilizza il link diretto a Google Drive (il CDN wsrv.nl viene bloccato da Google)
+                        imgElement.src = `https://lh3.googleusercontent.com/d/${firstImageId}`;
                     }
                 }
             });

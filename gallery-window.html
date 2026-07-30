@@ -236,8 +236,7 @@
 
         // Funzione per costruire l'URL dell'immagine da Google Drive
         function getDriveImageUrl(fileId) {
-            // Utilizziamo un CDN per mettere in cache le immagini di Google Drive ed evitare rallentamenti
-            return `https://wsrv.nl/?url=lh3.googleusercontent.com/d/${fileId}&w=1600&fit=contain`;
+            return `https://lh3.googleusercontent.com/d/${fileId}`;
         }
 
         // Carica la configurazione della galleria
