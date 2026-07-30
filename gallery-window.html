@@ -158,27 +158,27 @@
             opacity: 1;
         }
 
-        /* Container that moves and scales */
+        /* Container fisso a tutto schermo */
         .fs-image-container {
-            position: fixed;
+            position: absolute;
             top: 0;
             left: 0;
-            margin: 0;
-            padding: 0;
-            transform-origin: top left;
-            will-change: transform;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
         }
 
-        /* The image inside the container */
+        /* The image itself, animates purely with transform */
         .fs-image {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+            transform-origin: top left;
+            will-change: transform;
             cursor: grab;
-            transition: transform 0.1s; /* smooth continuous zoom */
+            object-fit: cover;
+            /* La transizione è gestita dal JS, ma mettiamo un default per lo zoom */
+            transition: transform 0.1s; 
         }
 
         .fs-image:active {
@@ -255,7 +255,9 @@
         let panX = 0;
         let panY = 0;
         let isDragging = false;
-        let startX, startY;
+        let currentScale = 1; // Used to track the scale assigned during fullscreen mode
+        let finalLeft = 0;
+        let finalTop = 0;
 
         function getQueryParam(param) {
             const params = new URLSearchParams(window.location.search);
@@ -330,44 +332,36 @@
             fsImage.style.display = 'block';
             fsImage.src = thumbImg.src;
 
-            // FIRST: Set initial position and size of the container to perfectly match the thumbnail
-            fsImageContainer.style.transition = 'none';
-            fsImageContainer.style.width = `${rect.width}px`;
-            fsImageContainer.style.height = `${rect.height}px`;
-            fsImageContainer.style.transform = `translate(${rect.left}px, ${rect.top}px)`;
-            
-            // To make object-fit: contain work smoothly, we switch it to cover initially
-            fsImage.style.objectFit = 'cover';
+            // FIRST: Position fsImage exactly over the thumbnail
+            fsImage.style.transition = 'none';
+            fsImage.style.width = `${rect.width}px`;
+            fsImage.style.height = `${rect.height}px`;
+            fsImage.style.transform = `translate(${rect.left}px, ${rect.top}px) scale(1)`;
 
             fsViewer.classList.add('active');
-            
-            // Hide the original thumbnail
-            thumbImg.style.opacity = '0';
+            thumbImg.style.opacity = '0'; // Hide original
 
             // Force reflow
-            fsImageContainer.offsetHeight;
+            fsImage.offsetHeight;
 
-            // LAST: Calculate the target position (center of the screen)
-            // We want to scale it up while preserving aspect ratio.
+            // LAST: Calculate the scale to fit the screen
             const targetWidth = window.innerWidth * 0.9;
             const targetHeight = window.innerHeight * 0.9;
             
-            // Calculate scale ratio to fit inside target dimensions
             const scaleX = targetWidth / rect.width;
             const scaleY = targetHeight / rect.height;
-            const scale = Math.min(scaleX, scaleY); // simulate object-fit contain manually for the container
+            const scale = Math.min(scaleX, scaleY);
+            currentScale = scale; // Save it for zoom/pan logic
             
             const finalWidth = rect.width * scale;
             const finalHeight = rect.height * scale;
             
-            const targetLeft = (window.innerWidth - finalWidth) / 2;
-            const targetTop = (window.innerHeight - finalHeight) / 2;
+            finalLeft = (window.innerWidth - finalWidth) / 2;
+            finalTop = (window.innerHeight - finalHeight) / 2;
 
-            // PLAY: Animate to center
-            fsImageContainer.style.transition = 'all 0.5s cubic-bezier(0.25, 1, 0.5, 1)';
-            fsImageContainer.style.width = `${finalWidth}px`;
-            fsImageContainer.style.height = `${finalHeight}px`;
-            fsImageContainer.style.transform = `translate(${targetLeft}px, ${targetTop}px)`;
+            // PLAY: Animate transform to the center of the screen
+            fsImage.style.transition = 'transform 0.4s cubic-bezier(0.25, 1, 0.5, 1)';
+            fsImage.style.transform = `translate(${finalLeft}px, ${finalTop}px) scale(${scale})`;
             
             // Load High Res Image in background
             fsSpinner.style.opacity = '1';
@@ -396,20 +390,15 @@
             zoomLevel = 1;
             panX = 0; 
             panY = 0;
-            updateImageTransform();
 
-            // Animate container back to thumbnail position
-            fsImageContainer.style.transition = 'all 0.4s cubic-bezier(0.25, 1, 0.5, 1)';
-            fsImage.style.objectFit = 'cover'; // Switch back to cover for seamless blend
-            fsImageContainer.style.width = `${rect.width}px`;
-            fsImageContainer.style.height = `${rect.height}px`;
-            fsImageContainer.style.transform = `translate(${rect.left}px, ${rect.top}px)`;
+            fsImage.style.transition = 'transform 0.4s cubic-bezier(0.25, 1, 0.5, 1)';
+            fsImage.style.transform = `translate(${rect.left}px, ${rect.top}px) scale(1)`;
 
             // Restore original thumbnail after animation
             setTimeout(() => {
                 if (!isFullscreen && activeThumbnailDiv) {
                     thumbImg.style.opacity = '1';
-                    fsImageContainer.style.transition = 'none';
+                    fsImage.style.transition = 'none';
                     fsImage.style.display = 'none';
                     activeThumbnailDiv = null;
                 }
@@ -431,7 +420,13 @@
         // --- ZOOM & PAN LOGIC ---
         
         function updateImageTransform() {
-            fsImage.style.transform = `translate(${panX}px, ${panY}px) scale(${zoomLevel})`;
+            // zoomLevel is relative to currentScale.
+            // When zoomed, we apply panX/panY on top of the centered final position.
+            if (!isFullscreen) return;
+            const totalScale = currentScale * zoomLevel;
+            const posX = finalLeft + panX;
+            const posY = finalTop + panY;
+            fsImage.style.transform = `translate(${posX}px, ${posY}px) scale(${totalScale})`;
         }
 
         // Mouse Wheel Zoom
