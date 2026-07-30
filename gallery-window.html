@@ -161,6 +161,10 @@
         /* Container that moves and scales */
         .fs-image-container {
             position: fixed;
+            top: 0;
+            left: 0;
+            margin: 0;
+            padding: 0;
             transform-origin: top left;
             will-change: transform;
             display: flex;
@@ -225,7 +229,7 @@
         <div class="loading-spinner" id="fsSpinner"></div>
         
         <div class="fs-image-container" id="fsImageContainer">
-            <img src="" alt="" class="fs-image" id="fsImage">
+            <img alt="Fullscreen Image" class="fs-image" id="fsImage" style="display: none;">
         </div>
         
         <div class="fs-zoom-info">Scorri per zoomare, trascina per spostarti</div>
@@ -322,7 +326,8 @@
             panY = 0;
             updateImageTransform();
 
-            // Set initial image (the thumbnail) so it's instantly visible
+            // Make image visible and set source
+            fsImage.style.display = 'block';
             fsImage.src = thumbImg.src;
 
             // FIRST: Set initial position and size of the container to perfectly match the thumbnail
@@ -405,6 +410,7 @@
                 if (!isFullscreen && activeThumbnailDiv) {
                     thumbImg.style.opacity = '1';
                     fsImageContainer.style.transition = 'none';
+                    fsImage.style.display = 'none';
                     activeThumbnailDiv = null;
                 }
             }, 400);
