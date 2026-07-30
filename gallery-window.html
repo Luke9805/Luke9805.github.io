@@ -2,7 +2,7 @@
 <html lang="it">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Galleria Fotografica</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -110,6 +110,7 @@
             align-items: center;
             justify-content: center;
             overflow: hidden;
+            touch-action: none;
         }
 
         .fullscreen-viewer.active {
@@ -435,13 +436,20 @@
             e.preventDefault();
             
             const zoomSensitivity = 0.15;
-            const delta = e.deltaY < 0 ? -1 : 1;
+            const delta = e.deltaY < 0 ? 1 : -1;
             
+            const oldZoom = zoomLevel;
             zoomLevel += delta * zoomSensitivity;
             
             // Limit zoom
             if (zoomLevel < 1) zoomLevel = 1;
             if (zoomLevel > 6) zoomLevel = 6;
+            
+            if (zoomLevel !== oldZoom) {
+                const scaleRatio = zoomLevel / oldZoom;
+                panX = (e.clientX - finalLeft) * (1 - scaleRatio) + panX * scaleRatio;
+                panY = (e.clientY - finalTop) * (1 - scaleRatio) + panY * scaleRatio;
+            }
             
             if (zoomLevel === 1) {
                 panX = 0;
@@ -476,6 +484,10 @@
         // Touch events for mobile zooming/panning
         let initialPinchDistance = null;
         let initialZoom = 1;
+        let initialPanX = 0;
+        let initialPanY = 0;
+        let initialCenterX = 0;
+        let initialCenterY = 0;
         
         fsImage.addEventListener('touchstart', (e) => {
             if (e.touches.length === 2) {
@@ -485,6 +497,10 @@
                     e.touches[0].clientY - e.touches[1].clientY
                 );
                 initialZoom = zoomLevel;
+                initialPanX = panX;
+                initialPanY = panY;
+                initialCenterX = (e.touches[0].clientX + e.touches[1].clientX) / 2;
+                initialCenterY = (e.touches[0].clientY + e.touches[1].clientY) / 2;
             } else if (e.touches.length === 1 && zoomLevel > 1) {
                 // Pan start
                 isDragging = true;
@@ -495,7 +511,7 @@
         
         fsImage.addEventListener('touchmove', (e) => {
             if (e.touches.length === 2 && initialPinchDistance) {
-                // Pinch zooming
+                // Pinch zooming and panning
                 e.preventDefault();
                 const currentDistance = Math.hypot(
                     e.touches[0].clientX - e.touches[1].clientX,
@@ -506,6 +522,16 @@
                 
                 if (zoomLevel < 1) zoomLevel = 1;
                 if (zoomLevel > 6) zoomLevel = 6;
+                
+                const scaleRatio = zoomLevel / initialZoom;
+                panX = (initialCenterX - finalLeft) * (1 - scaleRatio) + initialPanX * scaleRatio;
+                panY = (initialCenterY - finalTop) * (1 - scaleRatio) + initialPanY * scaleRatio;
+                
+                // Add the drag part of the pinch
+                const currentCenterX = (e.touches[0].clientX + e.touches[1].clientX) / 2;
+                const currentCenterY = (e.touches[0].clientY + e.touches[1].clientY) / 2;
+                panX += (currentCenterX - initialCenterX);
+                panY += (currentCenterY - initialCenterY);
                 
                 if (zoomLevel === 1) {
                     panX = 0;
@@ -521,9 +547,18 @@
             }
         }, { passive: false });
         
-        fsImage.addEventListener('touchend', () => {
-            isDragging = false;
-            initialPinchDistance = null;
+        fsImage.addEventListener('touchend', (e) => {
+            if (e.touches.length < 2) {
+                initialPinchDistance = null;
+            }
+            if (e.touches.length === 0) {
+                isDragging = false;
+            } else if (e.touches.length === 1 && zoomLevel > 1) {
+                // Switch to drag seamlessly if one finger remains
+                isDragging = true;
+                startX = e.touches[0].clientX - panX;
+                startY = e.touches[0].clientY - panY;
+            }
         });
 
         // Initialize
