@@ -439,7 +439,7 @@
     <!-- SEZIONE 1: HERO (Full-screen with Services) -->
     <section id="hero" class="relative w-full min-h-screen lg:h-[calc(100vh-144px)] flex items-center justify-center overflow-hidden pt-24 md:pt-20 lg:pt-0 pb-8 md:pb-4 lg:pb-0">
         <!-- Parallax Background -->
-        <div class="absolute inset-0 -z-10" style="background-image: url('https://lh3.googleusercontent.com/d/1q4CqB5m2mHODAnPhcM-T51W9oh4MLvP3'); background-size: cover; background-position: center; background-attachment: fixed;"></div>
+        <div class="absolute inset-0 -z-10" style="background-image: url('image.png'); background-size: cover; background-position: center; background-attachment: fixed;"></div>
         
         <!-- Strong overlay per massima leggibilità -->
         <div class="absolute inset-0 bg-black opacity-70 -z-10"></div>
@@ -466,7 +466,7 @@
                 <!-- Service 1: COMPLEANNI -->
                 <div class="hero-service-card service-card group cursor-pointer transform transition-all duration-300 hover:-translate-y-4" data-category="Compleanni">
                     <div class="relative overflow-hidden rounded-lg md:rounded-xl aspect-square bg-slate/30 backdrop-blur-sm border border-gold/20 hover:border-gold/60 transition-all duration-300">
-                        <img src="https://lh3.googleusercontent.com/d/18wPvUZaES7hvb7a6jjVNuB6RRi-d2OWG" 
+                        <img src="https://wsrv.nl/?url=lh3.googleusercontent.com/d/18wPvUZaES7hvb7a6jjVNuB6RRi-d2OWG&w=600&fit=cover" 
                              alt="Compleanni" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
                         
                         <div class="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent group-hover:via-black/60 transition-all duration-300"></div>
@@ -483,7 +483,7 @@
                 <!-- Service 2: RITRATTI -->
                 <div class="hero-service-card service-card group cursor-pointer transform transition-all duration-300 hover:-translate-y-4" data-category="Ritratti">
                     <div class="relative overflow-hidden rounded-lg md:rounded-xl aspect-square bg-slate/30 backdrop-blur-sm border border-gold/20 hover:border-gold/60 transition-all duration-300">
-                        <img src="https://lh3.googleusercontent.com/d/1q0-ZZOhmuTMXcjR5A3yRHGPLq-oC74p3" 
+                        <img src="https://wsrv.nl/?url=lh3.googleusercontent.com/d/1q0-ZZOhmuTMXcjR5A3yRHGPLq-oC74p3&w=600&fit=cover" 
                              alt="Ritratti" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
                         
                         <div class="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent group-hover:via-black/60 transition-all duration-300"></div>
@@ -500,7 +500,7 @@
                 <!-- Service 3: VARIE -->
                 <div class="hero-service-card service-card group cursor-pointer transform transition-all duration-300 hover:-translate-y-4" data-category="Varie">
                     <div class="relative overflow-hidden rounded-lg md:rounded-xl aspect-square bg-slate/30 backdrop-blur-sm border border-gold/20 hover:border-gold/60 transition-all duration-300">
-                        <img src="https://lh3.googleusercontent.com/d/15WcSA232wlCdAOWiQlkzyCYeuMC3adeL" 
+                        <img src="https://wsrv.nl/?url=lh3.googleusercontent.com/d/15WcSA232wlCdAOWiQlkzyCYeuMC3adeL&w=600&fit=cover" 
                              alt="Varie" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
                         
                         <div class="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent group-hover:via-black/60 transition-all duration-300"></div>
@@ -517,7 +517,7 @@
                 <!-- Service 4: ESIBIZIONI -->
                 <div class="hero-service-card service-card group cursor-pointer transform transition-all duration-300 hover:-translate-y-4" data-category="Esibizioni">
                     <div class="relative overflow-hidden rounded-lg md:rounded-xl aspect-square bg-slate/30 backdrop-blur-sm border border-gold/20 hover:border-gold/60 transition-all duration-300">
-                        <img src="https://lh3.googleusercontent.com/d/1MB2wK-DgMPZOyUb3x6-8hYbE2LknZkYr" 
+                        <img src="https://wsrv.nl/?url=lh3.googleusercontent.com/d/1MB2wK-DgMPZOyUb3x6-8hYbE2LknZkYr&w=600&fit=cover" 
                              alt="Esibizioni" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
                         
                         <div class="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent group-hover:via-black/60 transition-all duration-300"></div>
@@ -605,7 +605,9 @@
         
         // Crea URL di Google Drive dal file ID
         function getDriveImageUrl(fileId) {
-            return `https://lh3.googleusercontent.com/d/${fileId}`;
+            // Utilizziamo wsrv.nl come CDN proxy per implementare un sistema di caching 
+            // e superare le limitazioni di Google Drive per il caricamento delle immagini
+            return `https://wsrv.nl/?url=lh3.googleusercontent.com/d/${fileId}&w=1200&fit=contain`;
         }
         
         // Carica la configurazione della galleria
@@ -614,10 +616,31 @@
                 const response = await fetch('gallery-config.json');
                 galleryConfig = await response.json();
                 console.log('✅ Configurazione galleria caricata');
+                
+                // Aggiorna dinamicamente le immagini di copertina (evita link hardcoded scaduti)
+                updateCoverImages();
             } catch (error) {
                 console.error('Errore nel caricamento della configurazione della galleria:', error);
                 galleryConfig = {};
             }
+        }
+        
+        // Funzione per aggiornare le immagini delle card con le prime disponibili su Drive
+        function updateCoverImages() {
+            if (!galleryConfig) return;
+            
+            const cards = document.querySelectorAll('.hero-service-card');
+            cards.forEach(card => {
+                const category = card.getAttribute('data-category');
+                if (category && galleryConfig[category] && galleryConfig[category].length > 0) {
+                    const firstImageId = galleryConfig[category][0].fileId;
+                    const imgElement = card.querySelector('img');
+                    if (imgElement && firstImageId) {
+                        // Utilizza l'immagine aggiornata da Drive con ritaglio quadrato 
+                        imgElement.src = `https://wsrv.nl/?url=lh3.googleusercontent.com/d/${firstImageId}&w=600&fit=cover`;
+                    }
+                }
+            });
         }
         
         // Carica la configurazione all'avvio
