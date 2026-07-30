@@ -4,387 +4,529 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Galleria Fotografica</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         body {
-            background-color: #000;
+            background-color: #1A1A1A;
             color: #fff;
+            margin: 0;
+            overflow-x: hidden;
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', System, sans-serif;
-            overflow: hidden;
         }
 
-        .gallery-container {
-            width: 100%;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-
-        .gallery-header {
-            position: absolute;
+        /* HEADER */
+        .header {
+            position: sticky;
             top: 0;
-            left: 0;
-            right: 0;
-            padding: 20px;
+            z-index: 40;
+            background: rgba(26, 26, 26, 0.9);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: linear-gradient(to bottom, rgba(0,0,0,0.8), rgba(0,0,0,0));
-            z-index: 100;
+            border-bottom: 1px solid rgba(196, 167, 124, 0.2);
         }
 
         .gallery-title {
-            font-size: 24px;
-            font-weight: 600;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #C4A77C;
             letter-spacing: 2px;
+            font-family: 'Playfair Display', serif;
         }
 
         .close-btn {
             background: none;
             border: none;
-            color: #fff;
-            font-size: 32px;
+            color: #C4A77C;
+            font-size: 2.5rem;
+            line-height: 1;
             cursor: pointer;
-            padding: 0;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
             transition: transform 0.2s;
         }
-
         .close-btn:hover {
-            transform: scale(1.2);
+            transform: scale(1.1);
+            color: #fff;
         }
 
-        .image-wrapper {
-            position: relative;
-            width: 90%;
-            height: 80%;
+        /* MASONRY GRID */
+        .collage-grid {
+            padding: 20px;
+            column-count: 1;
+            column-gap: 20px;
             max-width: 1400px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            margin: 0 auto;
         }
 
-        .gallery-image {
-            max-width: 100%;
-            max-height: 100%;
-            object-fit: contain;
-            animation: fadeIn 0.4s ease-in-out;
-            user-select: none;
+        @media (min-width: 640px) { .collage-grid { column-count: 2; } }
+        @media (min-width: 1024px) { .collage-grid { column-count: 3; } }
+        @media (min-width: 1280px) { .collage-grid { column-count: 4; } }
+
+        .collage-item {
+            break-inside: avoid;
+            margin-bottom: 20px;
+            position: relative;
+            cursor: zoom-in;
+            border-radius: 8px;
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: slideUp 0.5s ease forwards;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+            background-color: #2a2a2a; /* Placeholder color while loading */
         }
 
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
+        .collage-item img {
+            width: 100%;
+            display: block;
+            transition: transform 0.3s ease;
+        }
+
+        .collage-item:hover img {
+            transform: scale(1.05);
+        }
+
+        @keyframes slideUp {
             to {
                 opacity: 1;
+                transform: translateY(0);
             }
         }
 
-        .nav-button {
+        /* FULLSCREEN VIEWER (FLIP Transition) */
+        .fullscreen-viewer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0);
+            z-index: 1000;
+            pointer-events: none;
+            transition: background 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .fullscreen-viewer.active {
+            background: rgba(0, 0, 0, 0.95);
+            pointer-events: all;
+        }
+
+        .fs-close-btn {
             position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background: rgba(255, 255, 255, 0.15);
-            border: none;
+            top: 20px;
+            left: 20px;
             color: #fff;
-            width: 50px;
-            height: 50px;
-            border-radius: 4px;
+            background: rgba(0,0,0,0.5);
+            border: none;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
             font-size: 24px;
             cursor: pointer;
+            z-index: 1010;
+            opacity: 0;
+            transition: opacity 0.3s ease;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.2s;
-            user-select: none;
         }
-
-        .nav-button:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: translateY(-50%) scale(1.1);
-        }
-
-        .nav-button:active {
-            transform: translateY(-50%) scale(0.95);
-        }
-
-        .prev-btn {
-            left: 10px;
-        }
-
-        .next-btn {
-            right: 10px;
-        }
-
-        .gallery-footer {
+        
+        .fs-zoom-info {
             position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            padding: 20px;
-            background: linear-gradient(to top, rgba(0,0,0,0.8), rgba(0,0,0,0));
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .counter {
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #aaa;
             font-size: 14px;
-            letter-spacing: 1px;
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(0,0,0,0.5);
             padding: 8px 16px;
-            border-radius: 4px;
+            border-radius: 20px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 1010;
+            pointer-events: none;
         }
 
-        .keyboard-info {
-            font-size: 12px;
-            color: rgba(255, 255, 255, 0.6);
+        .fullscreen-viewer.active .fs-close-btn,
+        .fullscreen-viewer.active .fs-zoom-info {
+            opacity: 1;
         }
 
-        /* Responsive */
-        @media (max-width: 768px) {
-            .gallery-header {
-                padding: 15px;
-            }
-
-            .gallery-title {
-                font-size: 18px;
-            }
-
-            .nav-button {
-                width: 40px;
-                height: 40px;
-                font-size: 20px;
-            }
-
-            .prev-btn {
-                left: 5px;
-            }
-
-            .next-btn {
-                right: 5px;
-            }
-
-            .gallery-footer {
-                padding: 15px;
-                flex-direction: column;
-                gap: 10px;
-            }
-
-            .keyboard-info {
-                font-size: 11px;
-            }
+        /* Container that moves and scales */
+        .fs-image-container {
+            position: fixed;
+            transform-origin: top left;
+            will-change: transform;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        .loading {
+        /* The image inside the container */
+        .fs-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            cursor: grab;
+            transition: transform 0.1s; /* smooth continuous zoom */
+        }
+
+        .fs-image:active {
+            cursor: grabbing;
+        }
+        
+        .loading-spinner {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(196, 167, 124, 0.2);
+            border-top: 4px solid #C4A77C;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            z-index: 999;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .error-msg {
             text-align: center;
-            font-size: 18px;
-            color: rgba(255, 255, 255, 0.7);
-        }
-
-        .error {
-            text-align: center;
-            font-size: 18px;
+            padding: 50px;
             color: #ff6b6b;
+            font-size: 1.2rem;
+            width: 100%;
         }
     </style>
 </head>
 <body>
-    <div class="gallery-container">
-        <div class="gallery-header">
-            <h1 class="gallery-title" id="galleryTitle">GALLERIA</h1>
-            <button class="close-btn" id="closeBtn">&times;</button>
-        </div>
 
-        <div class="image-wrapper">
-            <img id="galleryImage" class="gallery-image" src="" alt="Gallery image">
-            <button class="nav-button prev-btn" id="prevBtn">‹</button>
-            <button class="nav-button next-btn" id="nextBtn">›</button>
-        </div>
+    <header class="header">
+        <h1 class="gallery-title" id="galleryTitle">GALLERIA</h1>
+        <button class="close-btn" id="closeBtn" onclick="window.close()">&times;</button>
+    </header>
 
-        <div class="gallery-footer">
-            <div class="counter" id="counter">1 / 10</div>
-            <div class="keyboard-info">Usa ← → per navigare, ESC per chiudere</div>
+    <div class="collage-grid" id="collageGrid">
+        <!-- Collage items inserted via JS -->
+    </div>
+
+    <!-- FULLSCREEN VIEWER -->
+    <div class="fullscreen-viewer" id="fsViewer">
+        <button class="fs-close-btn" id="fsCloseBtn">&larr;</button>
+        <div class="loading-spinner" id="fsSpinner"></div>
+        
+        <div class="fs-image-container" id="fsImageContainer">
+            <img src="" alt="" class="fs-image" id="fsImage">
         </div>
+        
+        <div class="fs-zoom-info">Scorri per zoomare, trascina per spostarti</div>
     </div>
 
     <script>
         let galleryConfig = null;
         let currentCategory = '';
-        let currentImageIndex = 0;
         let categoryImages = [];
-        const preloadedImages = {}; // Cache per il preloading asincrono
 
-        // Funzione per precaricare in background le immagini adiacenti (sia avanti che indietro)
-        function preloadAdjacentImages(currentIndex, count = 3) {
-            if (categoryImages.length === 0) return;
-            
-            for (let i = 1; i <= count; i++) {
-                // Calcola l'indice dell'immagine successiva
-                const nextIndex = (currentIndex + i) % categoryImages.length;
-                const nextFileId = categoryImages[nextIndex].fileId;
-                
-                // Calcola l'indice dell'immagine precedente (con aritmetica sicura per i numeri negativi)
-                const prevIndex = (currentIndex - i + categoryImages.length) % categoryImages.length;
-                const prevFileId = categoryImages[prevIndex].fileId;
-                
-                // Precarica in avanti
-                if (!preloadedImages[nextFileId]) {
-                    const imgNext = new Image();
-                    imgNext.src = getDriveImageUrl(nextFileId);
-                    preloadedImages[nextFileId] = imgNext;
-                }
-                
-                // Precarica all'indietro
-                if (!preloadedImages[prevFileId]) {
-                    const imgPrev = new Image();
-                    imgPrev.src = getDriveImageUrl(prevFileId);
-                    preloadedImages[prevFileId] = imgPrev;
-                }
-            }
-        }
+        // DOM Elements
+        const grid = document.getElementById('collageGrid');
+        const fsViewer = document.getElementById('fsViewer');
+        const fsImage = document.getElementById('fsImage');
+        const fsImageContainer = document.getElementById('fsImageContainer');
+        const fsCloseBtn = document.getElementById('fsCloseBtn');
+        const fsSpinner = document.getElementById('fsSpinner');
 
-        // Funzione per ottenere il parametro dalla URL
+        // State
+        let isFullscreen = false;
+        let activeThumbnailDiv = null;
+        let zoomLevel = 1;
+        let panX = 0;
+        let panY = 0;
+        let isDragging = false;
+        let startX, startY;
+
         function getQueryParam(param) {
             const params = new URLSearchParams(window.location.search);
             return params.get(param);
         }
 
-        // Funzione per costruire l'URL dell'immagine da Google Drive
-        function getDriveImageUrl(fileId) {
+        function getDriveFullUrl(fileId) {
             return `https://lh3.googleusercontent.com/d/${fileId}`;
         }
 
-        // Carica la configurazione della galleria
-        async function loadGalleryConfig() {
+        async function init() {
             try {
-                const response = await fetch('gallery-config.json');
+                // Genera cache buster per assicurarci di avere il JSON aggiornato
+                const cacheBuster = new Date().getTime();
+                const response = await fetch(`gallery-config.json?t=${cacheBuster}`);
                 galleryConfig = await response.json();
-                console.log('✅ Configurazione galleria caricata');
-                initializeGallery();
-            } catch (error) {
-                console.error('Errore nel caricamento della configurazione:', error);
-                showError('Errore nel caricamento della galleria');
-            }
-        }
-
-        // Inizializza la galleria
-        function initializeGallery() {
-            currentCategory = getQueryParam('category') || '';
-
-            if (!currentCategory || !galleryConfig[currentCategory]) {
-                showError('Categoria non trovata');
-                return;
-            }
-
-            categoryImages = galleryConfig[currentCategory];
-
-            if (categoryImages.length === 0) {
-                showError('Nessuna immagine in questa categoria');
-                return;
-            }
-
-            document.getElementById('galleryTitle').textContent = currentCategory.toUpperCase();
-            currentImageIndex = 0;
-            updateImage();
-        }
-
-        // Aggiorna l'immagine visualizzata
-        function updateImage() {
-            if (categoryImages.length === 0) return;
-
-            const imageData = categoryImages[currentImageIndex];
-            const imageSrc = getDriveImageUrl(imageData.fileId);
-
-            const img = document.getElementById('galleryImage');
-            img.src = imageSrc;
-            img.alt = `${currentCategory} - ${currentImageIndex + 1}`;
-
-            document.getElementById('counter').textContent = `${currentImageIndex + 1} / ${categoryImages.length}`;
-            
-            // Precarica le 3 immagini successive e le 3 precedenti in modo asincrono
-            preloadAdjacentImages(currentImageIndex, 3);
-        }
-
-        // Mostra messaggio di errore
-        function showError(message) {
-            document.getElementById('galleryImage').style.display = 'none';
-            document.querySelector('.image-wrapper').innerHTML = `<div class="error">${message}</div>`;
-            document.getElementById('counter').textContent = '0 / 0';
-        }
-
-        // Event listeners
-        document.getElementById('nextBtn').addEventListener('click', () => {
-            if (categoryImages.length > 0) {
-                currentImageIndex = (currentImageIndex + 1) % categoryImages.length;
-                updateImage();
-            }
-        });
-
-        document.getElementById('prevBtn').addEventListener('click', () => {
-            if (categoryImages.length > 0) {
-                currentImageIndex = (currentImageIndex - 1 + categoryImages.length) % categoryImages.length;
-                updateImage();
-            }
-        });
-
-        document.getElementById('closeBtn').addEventListener('click', () => {
-            window.close();
-        });
-
-        // Tastiera
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowRight') document.getElementById('nextBtn').click();
-            if (e.key === 'ArrowLeft') document.getElementById('prevBtn').click();
-            if (e.key === 'Escape') window.close();
-        });
-
-        // Touch Swipe per mobile
-        let touchStartX = 0;
-        let touchEndX = 0;
-
-        const imageWrapper = document.querySelector('.image-wrapper');
-
-        imageWrapper.addEventListener('touchstart', (e) => {
-            touchStartX = e.changedTouches[0].screenX;
-        }, false);
-
-        imageWrapper.addEventListener('touchend', (e) => {
-            touchEndX = e.changedTouches[0].screenX;
-            handleSwipe();
-        }, false);
-
-        function handleSwipe() {
-            const swipeThreshold = 50; // Minimo di pixel per registrare uno swipe
-            const difference = touchStartX - touchEndX;
-
-            if (Math.abs(difference) > swipeThreshold) {
-                if (difference > 0) {
-                    // Swipe a sinistra = prossima immagine
-                    document.getElementById('nextBtn').click();
-                } else {
-                    // Swipe a destra = immagine precedente
-                    document.getElementById('prevBtn').click();
+                
+                currentCategory = getQueryParam('category');
+                
+                if (!currentCategory || !galleryConfig[currentCategory]) {
+                    grid.innerHTML = `<div class="error-msg">Categoria non trovata.</div>`;
+                    return;
                 }
+
+                document.getElementById('galleryTitle').textContent = currentCategory.toUpperCase();
+                categoryImages = galleryConfig[currentCategory];
+                
+                renderCollage();
+            } catch (err) {
+                console.error(err);
+                grid.innerHTML = `<div class="error-msg">Errore nel caricamento della galleria.</div>`;
             }
         }
 
-        // Carica la configurazione al caricamento della pagina
-        loadGalleryConfig();
+        function renderCollage() {
+            grid.innerHTML = '';
+            
+            categoryImages.forEach((imgData, index) => {
+                const div = document.createElement('div');
+                div.className = 'collage-item';
+                div.style.animationDelay = `${index * 0.05}s`;
+                
+                const img = document.createElement('img');
+                // Use WebP thumbnail if available, otherwise fallback to full Drive link
+                img.src = imgData.thumbnail ? imgData.thumbnail : getDriveFullUrl(imgData.fileId);
+                img.loading = 'lazy';
+                img.alt = imgData.name;
+                
+                div.appendChild(img);
+                grid.appendChild(div);
+
+                div.addEventListener('click', () => openFullscreen(div, imgData));
+            });
+        }
+
+        // --- FLIP ANIMATION & FULLSCREEN LOGIC ---
+
+        function openFullscreen(thumbnailDiv, imgData) {
+            if (isFullscreen) return;
+            isFullscreen = true;
+            activeThumbnailDiv = thumbnailDiv;
+            const thumbImg = thumbnailDiv.querySelector('img');
+            const rect = thumbImg.getBoundingClientRect();
+
+            // Reset zoom state
+            zoomLevel = 1;
+            panX = 0;
+            panY = 0;
+            updateImageTransform();
+
+            // Set initial image (the thumbnail) so it's instantly visible
+            fsImage.src = thumbImg.src;
+
+            // FIRST: Set initial position and size of the container to perfectly match the thumbnail
+            fsImageContainer.style.transition = 'none';
+            fsImageContainer.style.width = `${rect.width}px`;
+            fsImageContainer.style.height = `${rect.height}px`;
+            fsImageContainer.style.transform = `translate(${rect.left}px, ${rect.top}px)`;
+            
+            // To make object-fit: contain work smoothly, we switch it to cover initially
+            fsImage.style.objectFit = 'cover';
+
+            fsViewer.classList.add('active');
+            
+            // Hide the original thumbnail
+            thumbImg.style.opacity = '0';
+
+            // Force reflow
+            fsImageContainer.offsetHeight;
+
+            // LAST: Calculate the target position (center of the screen)
+            // We want to scale it up while preserving aspect ratio.
+            const targetWidth = window.innerWidth * 0.9;
+            const targetHeight = window.innerHeight * 0.9;
+            
+            // Calculate scale ratio to fit inside target dimensions
+            const scaleX = targetWidth / rect.width;
+            const scaleY = targetHeight / rect.height;
+            const scale = Math.min(scaleX, scaleY); // simulate object-fit contain manually for the container
+            
+            const finalWidth = rect.width * scale;
+            const finalHeight = rect.height * scale;
+            
+            const targetLeft = (window.innerWidth - finalWidth) / 2;
+            const targetTop = (window.innerHeight - finalHeight) / 2;
+
+            // PLAY: Animate to center
+            fsImageContainer.style.transition = 'all 0.5s cubic-bezier(0.25, 1, 0.5, 1)';
+            fsImageContainer.style.width = `${finalWidth}px`;
+            fsImageContainer.style.height = `${finalHeight}px`;
+            fsImageContainer.style.transform = `translate(${targetLeft}px, ${targetTop}px)`;
+            
+            // Load High Res Image in background
+            fsSpinner.style.opacity = '1';
+            const highResImg = new Image();
+            highResImg.src = getDriveFullUrl(imgData.fileId);
+            highResImg.onload = () => {
+                if (isFullscreen) {
+                    fsImage.src = highResImg.src;
+                    fsSpinner.style.opacity = '0';
+                    fsImage.style.objectFit = 'contain';
+                }
+            };
+        }
+
+        function closeFullscreen() {
+            if (!isFullscreen || !activeThumbnailDiv) return;
+            isFullscreen = false;
+            
+            fsViewer.classList.remove('active');
+            fsSpinner.style.opacity = '0';
+
+            const thumbImg = activeThumbnailDiv.querySelector('img');
+            const rect = thumbImg.getBoundingClientRect();
+
+            // Return to zoom 1 and remove image transformations
+            zoomLevel = 1;
+            panX = 0; 
+            panY = 0;
+            updateImageTransform();
+
+            // Animate container back to thumbnail position
+            fsImageContainer.style.transition = 'all 0.4s cubic-bezier(0.25, 1, 0.5, 1)';
+            fsImage.style.objectFit = 'cover'; // Switch back to cover for seamless blend
+            fsImageContainer.style.width = `${rect.width}px`;
+            fsImageContainer.style.height = `${rect.height}px`;
+            fsImageContainer.style.transform = `translate(${rect.left}px, ${rect.top}px)`;
+
+            // Restore original thumbnail after animation
+            setTimeout(() => {
+                if (!isFullscreen && activeThumbnailDiv) {
+                    thumbImg.style.opacity = '1';
+                    fsImageContainer.style.transition = 'none';
+                    activeThumbnailDiv = null;
+                }
+            }, 400);
+        }
+
+        fsCloseBtn.addEventListener('click', closeFullscreen);
+
+        fsViewer.addEventListener('click', (e) => {
+            if (e.target === fsViewer || e.target === fsImageContainer) {
+                closeFullscreen();
+            }
+        });
+        
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeFullscreen();
+        });
+
+        // --- ZOOM & PAN LOGIC ---
+        
+        function updateImageTransform() {
+            fsImage.style.transform = `translate(${panX}px, ${panY}px) scale(${zoomLevel})`;
+        }
+
+        // Mouse Wheel Zoom
+        fsViewer.addEventListener('wheel', (e) => {
+            if (!isFullscreen) return;
+            e.preventDefault();
+            
+            const zoomSensitivity = 0.15;
+            const delta = e.deltaY < 0 ? -1 : 1;
+            
+            zoomLevel += delta * zoomSensitivity;
+            
+            // Limit zoom
+            if (zoomLevel < 1) zoomLevel = 1;
+            if (zoomLevel > 6) zoomLevel = 6;
+            
+            if (zoomLevel === 1) {
+                panX = 0;
+                panY = 0;
+            }
+            
+            updateImageTransform();
+        }, { passive: false });
+
+        // Mouse Drag / Pan
+        fsImage.addEventListener('mousedown', (e) => {
+            if (zoomLevel <= 1) return; // Drag only when zoomed in
+            isDragging = true;
+            startX = e.clientX - panX;
+            startY = e.clientY - panY;
+            e.preventDefault();
+        });
+
+        window.addEventListener('mousemove', (e) => {
+            if (!isDragging || zoomLevel <= 1) return;
+            
+            panX = e.clientX - startX;
+            panY = e.clientY - startY;
+            
+            updateImageTransform();
+        });
+
+        window.addEventListener('mouseup', () => {
+            isDragging = false;
+        });
+        
+        // Touch events for mobile zooming/panning
+        let initialPinchDistance = null;
+        let initialZoom = 1;
+        
+        fsImage.addEventListener('touchstart', (e) => {
+            if (e.touches.length === 2) {
+                // Pinch start
+                initialPinchDistance = Math.hypot(
+                    e.touches[0].clientX - e.touches[1].clientX,
+                    e.touches[0].clientY - e.touches[1].clientY
+                );
+                initialZoom = zoomLevel;
+            } else if (e.touches.length === 1 && zoomLevel > 1) {
+                // Pan start
+                isDragging = true;
+                startX = e.touches[0].clientX - panX;
+                startY = e.touches[0].clientY - panY;
+            }
+        });
+        
+        fsImage.addEventListener('touchmove', (e) => {
+            if (e.touches.length === 2 && initialPinchDistance) {
+                // Pinch zooming
+                e.preventDefault();
+                const currentDistance = Math.hypot(
+                    e.touches[0].clientX - e.touches[1].clientX,
+                    e.touches[0].clientY - e.touches[1].clientY
+                );
+                const zoomFactor = currentDistance / initialPinchDistance;
+                zoomLevel = initialZoom * zoomFactor;
+                
+                if (zoomLevel < 1) zoomLevel = 1;
+                if (zoomLevel > 6) zoomLevel = 6;
+                
+                if (zoomLevel === 1) {
+                    panX = 0;
+                    panY = 0;
+                }
+                updateImageTransform();
+            } else if (e.touches.length === 1 && isDragging && zoomLevel > 1) {
+                // Panning
+                e.preventDefault();
+                panX = e.touches[0].clientX - startX;
+                panY = e.touches[0].clientY - startY;
+                updateImageTransform();
+            }
+        }, { passive: false });
+        
+        fsImage.addEventListener('touchend', () => {
+            isDragging = false;
+            initialPinchDistance = null;
+        });
+
+        // Initialize
+        init();
     </script>
 </body>
 </html>

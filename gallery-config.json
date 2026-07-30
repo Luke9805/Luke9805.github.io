@@ -2,319 +2,396 @@
   "Compleanni": [
     {
       "fileId": "1lmh1SP2tRPkfvCx5WBTPrH16dCckuTdv",
-      "name": "B_decorazioni_3.jpg"
+      "name": "B_decorazioni_3.jpg",
+      "thumbnail": "thumbnails/1lmh1SP2tRPkfvCx5WBTPrH16dCckuTdv.webp"
     },
     {
       "fileId": "1tvogm29PEgUcq6eiY6MJNJRauemGpqfZ",
-      "name": "Balli_6.jpg"
+      "name": "Balli_6.jpg",
+      "thumbnail": "thumbnails/1tvogm29PEgUcq6eiY6MJNJRauemGpqfZ.webp"
     },
     {
       "fileId": "1AhnkxJ7kAYTiUQ7gDToWVuVbpzlWVxvM",
-      "name": "Ballo con Gaia.jpg"
+      "name": "Ballo con Gaia.jpg",
+      "thumbnail": "thumbnails/1AhnkxJ7kAYTiUQ7gDToWVuVbpzlWVxvM.webp"
     },
     {
       "fileId": "1oJCYlZeErwkidF4CJjYpJmoEQ-ZNJ6h_",
-      "name": "Dettagli location_2.jpg"
+      "name": "Dettagli location_2.jpg",
+      "thumbnail": "thumbnails/1oJCYlZeErwkidF4CJjYpJmoEQ-ZNJ6h_.webp"
     },
     {
       "fileId": "1b7DTBtYncv4ji_KPZSO6HosyQoyJjcpz",
-      "name": "Dettagli location_4.jpg"
+      "name": "Dettagli location_4.jpg",
+      "thumbnail": "thumbnails/1b7DTBtYncv4ji_KPZSO6HosyQoyJjcpz.webp"
     },
     {
       "fileId": "1oqtVkzTxEPlXoZF-cmOAskVWOHGVx4vl",
-      "name": "Dj domenico_1.jpg"
+      "name": "Dj domenico_1.jpg",
+      "thumbnail": "thumbnails/1oqtVkzTxEPlXoZF-cmOAskVWOHGVx4vl.webp"
     },
     {
       "fileId": "1YH2LDaaJfEMdGsIHcY2CCha6AkxvyheZ",
-      "name": "La festeggiata allo specchio.jpg"
+      "name": "La festeggiata allo specchio.jpg",
+      "thumbnail": "thumbnails/1YH2LDaaJfEMdGsIHcY2CCha6AkxvyheZ.webp"
     },
     {
       "fileId": "1nyECqZdZvYzTicaoAKK8am5Jw0ICW7YR",
-      "name": "Love_6.jpg"
+      "name": "Love_6.jpg",
+      "thumbnail": "thumbnails/1nyECqZdZvYzTicaoAKK8am5Jw0ICW7YR.webp"
     },
     {
       "fileId": "1vZwE8PpImTSDUZMJb9ZApeyhruHUpV16",
-      "name": "X_varie_33.jpg"
+      "name": "X_varie_33.jpg",
+      "thumbnail": "thumbnails/1vZwE8PpImTSDUZMJb9ZApeyhruHUpV16.webp"
     },
     {
       "fileId": "1Dj_c1utzRtGT5R0eIrTEQcktnqjTSE7Q",
-      "name": "X_varie_47.jpg"
+      "name": "X_varie_47.jpg",
+      "thumbnail": "thumbnails/1Dj_c1utzRtGT5R0eIrTEQcktnqjTSE7Q.webp"
     }
   ],
   "Ritratti": [
     {
       "fileId": "1cUjfo-XMBmrgwowFeyJLduaEVY9exaDn",
-      "name": "Controlux_1.jpg"
+      "name": "Controlux_1.jpg",
+      "thumbnail": "thumbnails/1cUjfo-XMBmrgwowFeyJLduaEVY9exaDn.webp"
     },
     {
       "fileId": "1I4GeYPzW2qrc01L6I9xBKQv-NxzIAE8F",
-      "name": "DSC_0045.jpg"
+      "name": "DSC_0045.jpg",
+      "thumbnail": "thumbnails/1I4GeYPzW2qrc01L6I9xBKQv-NxzIAE8F.webp"
     },
     {
       "fileId": "1XLsCsybyt5qOU_p0QDVQOsnO4lYB-Br3",
-      "name": "Destra_1.jpg"
+      "name": "Destra_1.jpg",
+      "thumbnail": "thumbnails/1XLsCsybyt5qOU_p0QDVQOsnO4lYB-Br3.webp"
     },
     {
       "fileId": "15FZm1joDuJEpE1dCGQ901iN3oXXHO4K5",
-      "name": "Giuliah.jpg"
+      "name": "Giuliah.jpg",
+      "thumbnail": "thumbnails/15FZm1joDuJEpE1dCGQ901iN3oXXHO4K5.webp"
     },
     {
       "fileId": "1Y3sPpSp446mNb6rSMBspmC0LmpH0wHV3",
-      "name": "Gli occhi più belli di youtube italia.jpg"
+      "name": "Gli occhi più belli di youtube italia.jpg",
+      "thumbnail": "thumbnails/1Y3sPpSp446mNb6rSMBspmC0LmpH0wHV3.webp"
     },
     {
       "fileId": "1NzoUN7JeNcuKiashMpFfOBka_JkKhnGh",
-      "name": "La madonna quando vede cristo.jpg"
+      "name": "La madonna quando vede cristo.jpg",
+      "thumbnail": "thumbnails/1NzoUN7JeNcuKiashMpFfOBka_JkKhnGh.webp"
     },
     {
       "fileId": "14ePqOWm5XkC3jezfuiaxN9jngVUswx-6",
-      "name": "Luca solitario al parchetto spaccia cocaina_1.jpg"
+      "name": "Luca solitario al parchetto spaccia cocaina_1.jpg",
+      "thumbnail": "thumbnails/14ePqOWm5XkC3jezfuiaxN9jngVUswx-6.webp"
     },
     {
       "fileId": "19RolbTholQ8yfg7sXn_alDvyww1REDF4",
-      "name": "Lucastaffo.jpg"
+      "name": "Lucastaffo.jpg",
+      "thumbnail": "thumbnails/19RolbTholQ8yfg7sXn_alDvyww1REDF4.webp"
     },
     {
       "fileId": "1yAzgsvoKXg1tOb8yT96LM1MNfLYwbPfH",
-      "name": "Mezzo marco b Spaddato.jpg"
+      "name": "Mezzo marco b Spaddato.jpg",
+      "thumbnail": "thumbnails/1yAzgsvoKXg1tOb8yT96LM1MNfLYwbPfH.webp"
     },
     {
       "fileId": "12Lsx8RAw1Pq4_23nGAb5XYCS1LlUeb-L",
-      "name": "Nascosta dietro l'albero-2.jpg"
+      "name": "Nascosta dietro l'albero-2.jpg",
+      "thumbnail": "thumbnails/12Lsx8RAw1Pq4_23nGAb5XYCS1LlUeb-L.webp"
     },
     {
       "fileId": "1AKu6E2X848VDGKUxUOoqu9NfZ8TQHvNn",
-      "name": "Nio impazzisce alla diga_5.jpg"
+      "name": "Nio impazzisce alla diga_5.jpg",
+      "thumbnail": "thumbnails/1AKu6E2X848VDGKUxUOoqu9NfZ8TQHvNn.webp"
     },
     {
       "fileId": "1wdMTweukt-LZo2ssFOOOxVx4XoTDTxJ2",
-      "name": "Samuel Fortissimo.jpg"
+      "name": "Samuel Fortissimo.jpg",
+      "thumbnail": "thumbnails/1wdMTweukt-LZo2ssFOOOxVx4XoTDTxJ2.webp"
     },
     {
       "fileId": "1D8uJPqrA0AspZCP13C4IGE9FgsKTANxy",
-      "name": "Serena bluedress_9.jpg"
+      "name": "Serena bluedress_9.jpg",
+      "thumbnail": "thumbnails/1D8uJPqrA0AspZCP13C4IGE9FgsKTANxy.webp"
     },
     {
       "fileId": "1Z3a3v_9BZrWBomEx2JBKZmk1U5_lNm2k",
-      "name": "Serena jamiroquai_1.jpg"
+      "name": "Serena jamiroquai_1.jpg",
+      "thumbnail": "thumbnails/1Z3a3v_9BZrWBomEx2JBKZmk1U5_lNm2k.webp"
     },
     {
       "fileId": "1-AP4UUNqQFYe24ajn2kUaX7JA8Z-cfKL",
-      "name": "Showoff3.jpg"
+      "name": "Showoff3.jpg",
+      "thumbnail": "thumbnails/1-AP4UUNqQFYe24ajn2kUaX7JA8Z-cfKL.webp"
     },
     {
       "fileId": "1zsGAEepIm-qvCdM845VqDaoFWYthIPSj",
-      "name": "Showoff35.jpg"
+      "name": "Showoff35.jpg",
+      "thumbnail": "thumbnails/1zsGAEepIm-qvCdM845VqDaoFWYthIPSj.webp"
     },
     {
       "fileId": "1LC4J44zjdwYtJFDRN4QWQ2IDFqL0KeF1",
-      "name": "Showoff5.jpg"
+      "name": "Showoff5.jpg",
+      "thumbnail": "thumbnails/1LC4J44zjdwYtJFDRN4QWQ2IDFqL0KeF1.webp"
     },
     {
       "fileId": "19xS3DMmO9znrj7C91yDPjqtSQbz4b3OM",
-      "name": "Showoff8.jpg"
+      "name": "Showoff8.jpg",
+      "thumbnail": "thumbnails/19xS3DMmO9znrj7C91yDPjqtSQbz4b3OM.webp"
     },
     {
       "fileId": "16E0CJXAPs3jHFE-XEaFk-Sl3JHbM5s9M",
-      "name": "Showoff9.jpg"
+      "name": "Showoff9.jpg",
+      "thumbnail": "thumbnails/16E0CJXAPs3jHFE-XEaFk-Sl3JHbM5s9M.webp"
     },
     {
       "fileId": "1AZYRXQMtgRQD6OLHVVSUYbQTB7UjxCOE",
-      "name": "Ti guarda dead in the eye-2_no_metadata.jpg"
+      "name": "Ti guarda dead in the eye-2_no_metadata.jpg",
+      "thumbnail": "thumbnails/1AZYRXQMtgRQD6OLHVVSUYbQTB7UjxCOE.webp"
     },
     {
       "fileId": "1dRgyxe1P0PIlXZqU-ULs_-T8PIpTYizN",
-      "name": "il lungomaredi baeri_1.jpg"
+      "name": "il lungomaredi baeri_1.jpg",
+      "thumbnail": "thumbnails/1dRgyxe1P0PIlXZqU-ULs_-T8PIpTYizN.webp"
     },
     {
       "fileId": "1yscE1ndOf-_9_dEd769JRGxURCP5kYXu",
-      "name": "j'adore dior.jpg"
+      "name": "j'adore dior.jpg",
+      "thumbnail": "thumbnails/1yscE1ndOf-_9_dEd769JRGxURCP5kYXu.webp"
     }
   ],
   "Varie": [
     {
       "fileId": "1WqdENc9yNgrCbR2-Ub4u2dX6L_ulOum-",
-      "name": "Albero_1.jpg"
+      "name": "Albero_1.jpg",
+      "thumbnail": "thumbnails/1WqdENc9yNgrCbR2-Ub4u2dX6L_ulOum-.webp"
     },
     {
       "fileId": "1FiwrCk-tKhWQDC6HvuQA2mgLO0Wj-7pd",
-      "name": "Andrew licchelli in the way.jpg"
+      "name": "Andrew licchelli in the way.jpg",
+      "thumbnail": "thumbnails/1FiwrCk-tKhWQDC6HvuQA2mgLO0Wj-7pd.webp"
     },
     {
       "fileId": "1_hw81XJ7G7ISKkMPX8w6EwAaqTGf-UC_",
-      "name": "Barchetta sul mar.jpg"
+      "name": "Barchetta sul mar.jpg",
+      "thumbnail": "thumbnails/1_hw81XJ7G7ISKkMPX8w6EwAaqTGf-UC_.webp"
     },
     {
       "fileId": "13jNlUOxIy9hWbl-jaRqGH2lLO-mJtaWs",
-      "name": "Cielo.jpg"
+      "name": "Cielo.jpg",
+      "thumbnail": "thumbnails/13jNlUOxIy9hWbl-jaRqGH2lLO-mJtaWs.webp"
     },
     {
       "fileId": "1rzmBNYcOZAj6E23wS2TmjF3Qqpj6Fthu",
-      "name": "Circles around the sun.jpg"
+      "name": "Circles around the sun.jpg",
+      "thumbnail": "thumbnails/1rzmBNYcOZAj6E23wS2TmjF3Qqpj6Fthu.webp"
     },
     {
       "fileId": "1X5eAy37jJfWYgRWynAciPqwKu-zIaih9",
-      "name": "Foglie.jpg"
+      "name": "Foglie.jpg",
+      "thumbnail": "thumbnails/1X5eAy37jJfWYgRWynAciPqwKu-zIaih9.webp"
     },
     {
       "fileId": "1MTJcpQboePBIp5-P4OS2trd5oK4cAH-5",
-      "name": "Giro per matera film-4.jpg"
+      "name": "Giro per matera film-4.jpg",
+      "thumbnail": "thumbnails/1MTJcpQboePBIp5-P4OS2trd5oK4cAH-5.webp"
     },
     {
       "fileId": "1Ghdp2-Q6d2YBFYi8z1aS7WZgC1hwNkj_",
-      "name": "Giro per matera film-6.jpg"
+      "name": "Giro per matera film-6.jpg",
+      "thumbnail": "thumbnails/1Ghdp2-Q6d2YBFYi8z1aS7WZgC1hwNkj_.webp"
     },
     {
       "fileId": "1MppIgfRLbDIU7bsvvpph66nm2w60KiVn",
-      "name": "Gli scarabocchi.jpg"
+      "name": "Gli scarabocchi.jpg",
+      "thumbnail": "thumbnails/1MppIgfRLbDIU7bsvvpph66nm2w60KiVn.webp"
     },
     {
       "fileId": "1ht93jP0X9JYQoQRI52mWni9PK0jRTv5F",
-      "name": "Godo_2.jpg"
+      "name": "Godo_2.jpg",
+      "thumbnail": "thumbnails/1ht93jP0X9JYQoQRI52mWni9PK0jRTv5F.webp"
     },
     {
       "fileId": "1HOIicnIfdjn_5__znKex5OjPJCVusryY",
-      "name": "Il paesaggio più bello assai.jpg"
+      "name": "Il paesaggio più bello assai.jpg",
+      "thumbnail": "thumbnails/1HOIicnIfdjn_5__znKex5OjPJCVusryY.webp"
     },
     {
       "fileId": "1SYeNvxoboKzC6W_acWuW44vVsWTz8Avm",
-      "name": "La pala eolica in the sera.jpg"
+      "name": "La pala eolica in the sera.jpg",
+      "thumbnail": "thumbnails/1SYeNvxoboKzC6W_acWuW44vVsWTz8Avm.webp"
     },
     {
       "fileId": "12NnevcvuY51aDOqp124cUiyXKg1Dpbha",
-      "name": "Luca.jpg"
+      "name": "Luca.jpg",
+      "thumbnail": "thumbnails/12NnevcvuY51aDOqp124cUiyXKg1Dpbha.webp"
     },
     {
       "fileId": "1G4U7m5uu1nP3292GCfMhKMB9M8Y1pC6x",
-      "name": "Paesaggi materani_1.jpg"
+      "name": "Paesaggi materani_1.jpg",
+      "thumbnail": "thumbnails/1G4U7m5uu1nP3292GCfMhKMB9M8Y1pC6x.webp"
     },
     {
       "fileId": "1ooZZX6uxEmv9JwbRmyljvgzIevXkIVRp",
-      "name": "Palazzo del governo di bari.jpg"
+      "name": "Palazzo del governo di bari.jpg",
+      "thumbnail": "thumbnails/1ooZZX6uxEmv9JwbRmyljvgzIevXkIVRp.webp"
     },
     {
       "fileId": "174zBBK2piKs48ujBTvPt12crNoxMLO_Q",
-      "name": "Segreto.jpg"
+      "name": "Segreto.jpg",
+      "thumbnail": "thumbnails/174zBBK2piKs48ujBTvPt12crNoxMLO_Q.webp"
     },
     {
       "fileId": "1OkgNk6HrDmdfZNaTVNukWZN_YfPRFFEz",
-      "name": "Serata alla digs.jpg"
+      "name": "Serata alla digs.jpg",
+      "thumbnail": "thumbnails/1OkgNk6HrDmdfZNaTVNukWZN_YfPRFFEz.webp"
     },
     {
       "fileId": "1gZnJvjtcyN69PMMs_n0K3rJPNOmceC58",
-      "name": "Sfondi tops.jpg"
+      "name": "Sfondi tops.jpg",
+      "thumbnail": "thumbnails/1gZnJvjtcyN69PMMs_n0K3rJPNOmceC58.webp"
     },
     {
       "fileId": "1JxIsWDDewxbE_pgMJTHHDi6KXKluyyDx",
-      "name": "Showoff10.jpg"
+      "name": "Showoff10.jpg",
+      "thumbnail": "thumbnails/1JxIsWDDewxbE_pgMJTHHDi6KXKluyyDx.webp"
     },
     {
       "fileId": "1GFHQLBKD9SGce6vVcuVcTYHoE8n201fh",
-      "name": "Showoff12.jpg"
+      "name": "Showoff12.jpg",
+      "thumbnail": "thumbnails/1GFHQLBKD9SGce6vVcuVcTYHoE8n201fh.webp"
     },
     {
       "fileId": "1RtiSDR84R81FscLbFk539lB8owan7q3Y",
-      "name": "Showoff19.jpg"
+      "name": "Showoff19.jpg",
+      "thumbnail": "thumbnails/1RtiSDR84R81FscLbFk539lB8owan7q3Y.webp"
     },
     {
       "fileId": "1p1VgxjRuzvlZs8JL-qUW-xdfPs37nrfO",
-      "name": "Showoff20.jpg"
+      "name": "Showoff20.jpg",
+      "thumbnail": "thumbnails/1p1VgxjRuzvlZs8JL-qUW-xdfPs37nrfO.webp"
     },
     {
       "fileId": "1nJC5AspDi7a-a0FTbJLAOGBs79s7grjl",
-      "name": "Showoff21.jpg"
+      "name": "Showoff21.jpg",
+      "thumbnail": "thumbnails/1nJC5AspDi7a-a0FTbJLAOGBs79s7grjl.webp"
     },
     {
       "fileId": "19M7BWgGtmWBEQGwXxM9vxeqRm_42GfHH",
-      "name": "Showoff23.jpg"
+      "name": "Showoff23.jpg",
+      "thumbnail": "thumbnails/19M7BWgGtmWBEQGwXxM9vxeqRm_42GfHH.webp"
     },
     {
       "fileId": "1xLAk-ljfK4fjNqe_lyy52Xxm_ATp7bXG",
-      "name": "Showoff24.jpg"
+      "name": "Showoff24.jpg",
+      "thumbnail": "thumbnails/1xLAk-ljfK4fjNqe_lyy52Xxm_ATp7bXG.webp"
     },
     {
       "fileId": "1f5xqt7a_JquFAJT668EKjhxxzpF5u52M",
-      "name": "Showoff25.jpg"
+      "name": "Showoff25.jpg",
+      "thumbnail": "thumbnails/1f5xqt7a_JquFAJT668EKjhxxzpF5u52M.webp"
     },
     {
       "fileId": "1cYqsE6NZhIoRTB3-h9sgZ1tl5fPS1p56",
-      "name": "Showoff26.jpg"
+      "name": "Showoff26.jpg",
+      "thumbnail": null
     },
     {
       "fileId": "14XQtMef6Qb_3KlGiQQm1S2IpihCItezc",
-      "name": "Showoff28.jpg"
+      "name": "Showoff28.jpg",
+      "thumbnail": "thumbnails/14XQtMef6Qb_3KlGiQQm1S2IpihCItezc.webp"
     },
     {
       "fileId": "1WnHPOZj9szA80PcwaB4hradvqb-lzoIA",
-      "name": "Showoff32.jpg"
+      "name": "Showoff32.jpg",
+      "thumbnail": "thumbnails/1WnHPOZj9szA80PcwaB4hradvqb-lzoIA.webp"
     },
     {
       "fileId": "1PAkJ0ORn74cmvrwDAqjQF2fmAXdHgxs_",
-      "name": "Showoff33.jpg"
+      "name": "Showoff33.jpg",
+      "thumbnail": "thumbnails/1PAkJ0ORn74cmvrwDAqjQF2fmAXdHgxs_.webp"
     },
     {
       "fileId": "1RuP4j9fEEDxZYX5lnO-JOaameC2ah2ex",
-      "name": "Showoff34.jpg"
+      "name": "Showoff34.jpg",
+      "thumbnail": "thumbnails/1RuP4j9fEEDxZYX5lnO-JOaameC2ah2ex.webp"
     },
     {
       "fileId": "1o-_eoCiGvPlG16FV2ciaxF4ToZv28RZ9",
-      "name": "Stelle sulla cattedrale.jpg"
+      "name": "Stelle sulla cattedrale.jpg",
+      "thumbnail": "thumbnails/1o-_eoCiGvPlG16FV2ciaxF4ToZv28RZ9.webp"
     }
   ],
   "Esibizioni": [
     {
       "fileId": "1B7TdNNUdGKCLemLr9kn32NjkqkDefoWv",
-      "name": "Basso e chitarra_6.jpg"
+      "name": "Basso e chitarra_6.jpg",
+      "thumbnail": "thumbnails/1B7TdNNUdGKCLemLr9kn32NjkqkDefoWv.webp"
     },
     {
       "fileId": "1OwFzdwy8zRInI5XeD5-_TlXKxH1ZAHLS",
-      "name": "Bush.jpg"
+      "name": "Bush.jpg",
+      "thumbnail": "thumbnails/1OwFzdwy8zRInI5XeD5-_TlXKxH1ZAHLS.webp"
     },
     {
       "fileId": "1gsz0n2cX4fJ1BygvQNXMjbDFEgfm7-WA",
-      "name": "Che cazzo di risata malefica.jpg"
+      "name": "Che cazzo di risata malefica.jpg",
+      "thumbnail": "thumbnails/1gsz0n2cX4fJ1BygvQNXMjbDFEgfm7-WA.webp"
     },
     {
       "fileId": "1rsSUY5vSkkulx9O6XzA1lLxqjXa2aq3D",
-      "name": "DSCF7458.jpg"
+      "name": "DSCF7458.jpg",
+      "thumbnail": "thumbnails/1rsSUY5vSkkulx9O6XzA1lLxqjXa2aq3D.webp"
     },
     {
       "fileId": "1C8KBcdyrvFwlDQ_9i4KOEnzqLGALEwDN",
-      "name": "Firfale.jpg"
+      "name": "Firfale.jpg",
+      "thumbnail": "thumbnails/1C8KBcdyrvFwlDQ_9i4KOEnzqLGALEwDN.webp"
     },
     {
       "fileId": "1pwi1RICzJRvaEtzNzgfdPY3O4fogx8SS",
-      "name": "Giasi direttrice top.jpg"
+      "name": "Giasi direttrice top.jpg",
+      "thumbnail": "thumbnails/1pwi1RICzJRvaEtzNzgfdPY3O4fogx8SS.webp"
     },
     {
       "fileId": "1dhyYFMq1NfuMF8XNCIqSQNoHp6JHbz1M",
-      "name": "Lui è un business man.jpg"
+      "name": "Lui è un business man.jpg",
+      "thumbnail": "thumbnails/1dhyYFMq1NfuMF8XNCIqSQNoHp6JHbz1M.webp"
     },
     {
       "fileId": "1PF6cuDeRq1h-923hA9IpTF_HT38witXW",
-      "name": "Pippiripipipi.jpg"
+      "name": "Pippiripipipi.jpg",
+      "thumbnail": "thumbnails/1PF6cuDeRq1h-923hA9IpTF_HT38witXW.webp"
     },
     {
       "fileId": "1lpLAK_EvoNEmx06aPnPYQUpGExED0OG5",
-      "name": "Showoff18.jpg"
+      "name": "Showoff18.jpg",
+      "thumbnail": "thumbnails/1lpLAK_EvoNEmx06aPnPYQUpGExED0OG5.webp"
     },
     {
       "fileId": "1fiGVaAFJJxhq29b5XJ5DN-hk6yYKOWhU",
-      "name": "Totale_1.jpg"
+      "name": "Totale_1.jpg",
+      "thumbnail": "thumbnails/1fiGVaAFJJxhq29b5XJ5DN-hk6yYKOWhU.webp"
     },
     {
       "fileId": "1Hq7DL3bnvMAPFeB3291gztFjz9CvIFdB",
-      "name": "embi losco_5.jpg"
+      "name": "embi losco_5.jpg",
+      "thumbnail": "thumbnails/1Hq7DL3bnvMAPFeB3291gztFjz9CvIFdB.webp"
     }
   ],
   "Legacy": [
     {
       "fileId": "1FHOyr0-TqmTr5qsWfbqL4RPYaWjUpSRi",
-      "name": "Showoff1.jpg"
+      "name": "Showoff1.jpg",
+      "thumbnail": "thumbnails/1FHOyr0-TqmTr5qsWfbqL4RPYaWjUpSRi.webp"
     },
     {
       "fileId": "14DBY89OdQSjvwM213AXqPxVVN0IDAPS_",
-      "name": "Showoff2.jpg"
+      "name": "Showoff2.jpg",
+      "thumbnail": "thumbnails/14DBY89OdQSjvwM213AXqPxVVN0IDAPS_.webp"
     }
   ]
 }
