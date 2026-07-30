@@ -229,19 +229,31 @@
         let categoryImages = [];
         const preloadedImages = {}; // Cache per il preloading asincrono
 
-        // Funzione per precaricare in background le prossime N immagini
-        function preloadNextImages(currentIndex, count = 5) {
+        // Funzione per precaricare in background le immagini adiacenti (sia avanti che indietro)
+        function preloadAdjacentImages(currentIndex, count = 3) {
             if (categoryImages.length === 0) return;
             
             for (let i = 1; i <= count; i++) {
+                // Calcola l'indice dell'immagine successiva
                 const nextIndex = (currentIndex + i) % categoryImages.length;
-                const fileId = categoryImages[nextIndex].fileId;
+                const nextFileId = categoryImages[nextIndex].fileId;
                 
-                // Se non l'abbiamo già precaricata, avvia il download asincrono
-                if (!preloadedImages[fileId]) {
-                    const img = new Image();
-                    img.src = getDriveImageUrl(fileId);
-                    preloadedImages[fileId] = img;
+                // Calcola l'indice dell'immagine precedente (con aritmetica sicura per i numeri negativi)
+                const prevIndex = (currentIndex - i + categoryImages.length) % categoryImages.length;
+                const prevFileId = categoryImages[prevIndex].fileId;
+                
+                // Precarica in avanti
+                if (!preloadedImages[nextFileId]) {
+                    const imgNext = new Image();
+                    imgNext.src = getDriveImageUrl(nextFileId);
+                    preloadedImages[nextFileId] = imgNext;
+                }
+                
+                // Precarica all'indietro
+                if (!preloadedImages[prevFileId]) {
+                    const imgPrev = new Image();
+                    imgPrev.src = getDriveImageUrl(prevFileId);
+                    preloadedImages[prevFileId] = imgPrev;
                 }
             }
         }
@@ -304,8 +316,8 @@
 
             document.getElementById('counter').textContent = `${currentImageIndex + 1} / ${categoryImages.length}`;
             
-            // Precarica le 5 immagini successive in modo asincrono
-            preloadNextImages(currentImageIndex, 5);
+            // Precarica le 3 immagini successive e le 3 precedenti in modo asincrono
+            preloadAdjacentImages(currentImageIndex, 3);
         }
 
         // Mostra messaggio di errore
