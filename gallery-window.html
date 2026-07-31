@@ -84,8 +84,10 @@
             transition: transform 0.3s ease;
         }
 
-        .collage-item:hover img {
-            transform: scale(1.05);
+        @media (hover: hover) {
+            .collage-item:hover img {
+                transform: scale(1.05);
+            }
         }
 
         @keyframes slideUp {

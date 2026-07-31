@@ -68,27 +68,18 @@
             will-change: border-color;
         }
         
-        .service-card:hover {
-            border-color: #C4A77C;
-        }
-        
-        .service-card img {
-            transition: transform 0.3s ease-out;
-            will-change: transform;
-        }
-        
-        .service-card:hover img {
-            transform: scale(1.08);
-        }
+        @media (hover: hover) {
+            .service-card:hover {
+                border-color: #C4A77C;
+            }
+            
+            .service-card:hover img {
+                transform: scale(1.08);
+            }
 
-        /* Hero Service Cards */
-        .hero-service-card {
-            transition: transform 0.3s ease-out;
-            will-change: transform;
-        }
-
-        .hero-service-card:hover {
-            transform: translateY(-8px);
+            .hero-service-card:hover {
+                transform: translateY(-8px);
+            }
         }
         
         /* Scroll Down Arrow Animation */
@@ -193,9 +184,11 @@
             }
         }
         
-        .slider-nav-btn:hover {
-            background-color: #C4A77C;
-            transform: translateY(-50%) scale(1.1);
+        @media (hover: hover) {
+            .slider-nav-btn:hover {
+                background-color: #C4A77C;
+                transform: translateY(-50%) scale(1.1);
+            }
         }
         
         .slider-nav-btn.prev {
@@ -247,8 +240,10 @@
             }
         }
         
-        .slider-close-btn:hover {
-            background-color: #C4A77C;
+        @media (hover: hover) {
+            .slider-close-btn:hover {
+                background-color: #C4A77C;
+            }
         }
         
         .slider-counter {
@@ -300,8 +295,10 @@
             will-change: transform;
         }
         
-        .video-card:hover {
-            transform: translateY(-5px);
+        @media (hover: hover) {
+            .video-card:hover {
+                transform: translateY(-5px);
+            }
         }
         
         video {
