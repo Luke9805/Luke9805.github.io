@@ -333,6 +333,8 @@
             fsImage.style.width = `${rect.width}px`;
             fsImage.style.height = `${rect.height}px`;
             fsImage.style.transform = `translate(${rect.left}px, ${rect.top}px) scale(1)`;
+            fsImage.style.borderRadius = '8px';
+            fsImage.style.objectFit = 'cover'; // match thumbnail strictly
 
             fsViewer.classList.add('active');
             thumbImg.style.opacity = '0'; // Hide original
@@ -356,7 +358,8 @@
             finalTop = (window.innerHeight - finalHeight) / 2;
 
             // PLAY: Animate transform to the center of the screen
-            fsImage.style.transition = 'transform 0.4s cubic-bezier(0.25, 1, 0.5, 1)';
+            fsImage.style.transition = 'transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), border-radius 0.4s ease';
+            fsImage.style.borderRadius = '0px';
             fsImage.style.transform = `translate(${finalLeft}px, ${finalTop}px) scale(${scale})`;
             
             // Load High Res Image in background
@@ -393,7 +396,12 @@
             const oldWidth = parseFloat(fsImage.style.width);
             const targetScaleX = oldWidth > 0 ? (rect.width / oldWidth) : 1;
 
-            fsImage.style.transition = 'transform 0.4s cubic-bezier(0.25, 1, 0.5, 1)';
+            // Evita salti di aspect-ratio reimpostando l'immagine a bassa risoluzione e cover
+            fsImage.src = thumbImg.src;
+            fsImage.style.objectFit = 'cover';
+
+            fsImage.style.transition = 'transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), border-radius 0.4s ease';
+            fsImage.style.borderRadius = '8px';
             fsImage.style.transform = `translate(${rect.left}px, ${rect.top}px) scale(${targetScaleX})`;
 
             // Restore original thumbnail after animation
