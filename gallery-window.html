@@ -176,14 +176,9 @@
             left: 0;
             transform-origin: top left;
             will-change: transform;
-            cursor: grab;
+            cursor: zoom-in;
             object-fit: cover;
-            /* La transizione è gestita dal JS, ma mettiamo un default per lo zoom */
-            transition: transform 0.1s; 
-        }
-
-        .fs-image:active {
-            cursor: grabbing;
+            pointer-events: auto;
         }
         
         .loading-spinner {
@@ -327,7 +322,7 @@
             zoomLevel = 1;
             panX = 0;
             panY = 0;
-            updateImageTransform();
+            fsImage.style.cursor = 'zoom-in';
 
             // Make image visible and set source
             fsImage.style.display = 'block';
@@ -391,6 +386,7 @@
             zoomLevel = 1;
             panX = 0; 
             panY = 0;
+            fsImage.style.cursor = 'zoom-in';
 
             fsImage.style.transition = 'transform 0.4s cubic-bezier(0.25, 1, 0.5, 1)';
             fsImage.style.transform = `translate(${rect.left}px, ${rect.top}px) scale(1)`;
@@ -420,14 +416,38 @@
 
         // --- ZOOM & PAN LOGIC ---
         
-        function updateImageTransform() {
-            // zoomLevel is relative to currentScale.
-            // When zoomed, we apply panX/panY on top of the centered final position.
+        function updateImageTransform(smooth = false) {
             if (!isFullscreen) return;
             const totalScale = currentScale * zoomLevel;
             const posX = finalLeft + panX;
             const posY = finalTop + panY;
+            
+            fsImage.style.transition = smooth ? 'transform 0.3s cubic-bezier(0.25, 1, 0.5, 1)' : 'none';
             fsImage.style.transform = `translate(${posX}px, ${posY}px) scale(${totalScale})`;
+            
+            if (zoomLevel > 1) {
+                fsImage.style.cursor = isDragging ? 'grabbing' : 'grab';
+            } else {
+                fsImage.style.cursor = 'zoom-in';
+            }
+        }
+        
+        function performZoom(newZoom, clientX, clientY, smooth = true) {
+            if (newZoom < 1) newZoom = 1;
+            if (newZoom > 6) newZoom = 6;
+            
+            if (newZoom === 1) {
+                panX = 0;
+                panY = 0;
+                zoomLevel = 1;
+            } else {
+                const oldZoom = zoomLevel;
+                const scaleRatio = newZoom / oldZoom;
+                panX = (clientX - finalLeft) * (1 - scaleRatio) + panX * scaleRatio;
+                panY = (clientY - finalTop) * (1 - scaleRatio) + panY * scaleRatio;
+                zoomLevel = newZoom;
+            }
+            updateImageTransform(smooth);
         }
 
         // Mouse Wheel Zoom
@@ -435,50 +455,61 @@
             if (!isFullscreen) return;
             e.preventDefault();
             
-            const zoomSensitivity = 0.15;
+            const zoomSensitivity = 0.2;
             const delta = e.deltaY < 0 ? 1 : -1;
             
-            const oldZoom = zoomLevel;
-            zoomLevel += delta * zoomSensitivity;
-            
-            // Limit zoom
-            if (zoomLevel < 1) zoomLevel = 1;
-            if (zoomLevel > 6) zoomLevel = 6;
-            
-            if (zoomLevel !== oldZoom) {
-                const scaleRatio = zoomLevel / oldZoom;
-                panX = (e.clientX - finalLeft) * (1 - scaleRatio) + panX * scaleRatio;
-                panY = (e.clientY - finalTop) * (1 - scaleRatio) + panY * scaleRatio;
-            }
-            
-            if (zoomLevel === 1) {
-                panX = 0;
-                panY = 0;
-            }
-            
-            updateImageTransform();
+            performZoom(zoomLevel + delta * zoomSensitivity, e.clientX, e.clientY, false);
         }, { passive: false });
 
-        // Mouse Drag / Pan
+        // Mouse Drag & Click to Zoom
+        let startX = 0, startY = 0;
+        let dragMoved = false;
+
         fsImage.addEventListener('mousedown', (e) => {
-            if (zoomLevel <= 1) return; // Drag only when zoomed in
+            e.preventDefault();
             isDragging = true;
+            dragMoved = false;
             startX = e.clientX - panX;
             startY = e.clientY - panY;
-            e.preventDefault();
+            if (zoomLevel > 1) {
+                updateImageTransform(false); // Update cursor to grabbing
+            }
         });
 
         window.addEventListener('mousemove', (e) => {
-            if (!isDragging || zoomLevel <= 1) return;
+            if (!isDragging) return;
+            if (zoomLevel <= 1) return; // Don't pan if not zoomed in
+            
+            const dx = e.clientX - startX - panX;
+            const dy = e.clientY - startY - panY;
+            if (Math.abs(dx) > 3 || Math.abs(dy) > 3) {
+                dragMoved = true;
+            }
             
             panX = e.clientX - startX;
             panY = e.clientY - startY;
             
-            updateImageTransform();
+            updateImageTransform(false);
         });
 
         window.addEventListener('mouseup', () => {
-            isDragging = false;
+            if (isDragging) {
+                isDragging = false;
+                if (zoomLevel > 1) {
+                    updateImageTransform(false); // Update cursor back to grab
+                }
+            }
+        });
+
+        // Click to zoom in/out
+        fsImage.addEventListener('click', (e) => {
+            if (dragMoved) return; // It was a drag, not a click
+            
+            if (zoomLevel === 1) {
+                performZoom(2.5, e.clientX, e.clientY, true);
+            } else {
+                performZoom(1, e.clientX, e.clientY, true);
+            }
         });
         
         // Touch events for mobile zooming/panning
@@ -488,6 +519,8 @@
         let initialPanY = 0;
         let initialCenterX = 0;
         let initialCenterY = 0;
+        let touchDragMoved = false;
+        let lastTapTime = 0;
         
         fsImage.addEventListener('touchstart', (e) => {
             if (e.touches.length === 2) {
@@ -501,9 +534,11 @@
                 initialPanY = panY;
                 initialCenterX = (e.touches[0].clientX + e.touches[1].clientX) / 2;
                 initialCenterY = (e.touches[0].clientY + e.touches[1].clientY) / 2;
-            } else if (e.touches.length === 1 && zoomLevel > 1) {
+                isDragging = false;
+            } else if (e.touches.length === 1) {
                 // Pan start
                 isDragging = true;
+                touchDragMoved = false;
                 startX = e.touches[0].clientX - panX;
                 startY = e.touches[0].clientY - panY;
             }
@@ -518,32 +553,41 @@
                     e.touches[0].clientY - e.touches[1].clientY
                 );
                 const zoomFactor = currentDistance / initialPinchDistance;
-                zoomLevel = initialZoom * zoomFactor;
+                const targetZoom = initialZoom * zoomFactor;
                 
-                if (zoomLevel < 1) zoomLevel = 1;
-                if (zoomLevel > 6) zoomLevel = 6;
+                const currentCenterX = (e.touches[0].clientX + e.touches[1].clientX) / 2;
+                const currentCenterY = (e.touches[0].clientY + e.touches[1].clientY) / 2;
                 
-                const scaleRatio = zoomLevel / initialZoom;
+                let tempZoom = targetZoom;
+                if (tempZoom < 1) tempZoom = 1;
+                if (tempZoom > 6) tempZoom = 6;
+                
+                const scaleRatio = tempZoom / initialZoom;
                 panX = (initialCenterX - finalLeft) * (1 - scaleRatio) + initialPanX * scaleRatio;
                 panY = (initialCenterY - finalTop) * (1 - scaleRatio) + initialPanY * scaleRatio;
                 
                 // Add the drag part of the pinch
-                const currentCenterX = (e.touches[0].clientX + e.touches[1].clientX) / 2;
-                const currentCenterY = (e.touches[0].clientY + e.touches[1].clientY) / 2;
                 panX += (currentCenterX - initialCenterX);
                 panY += (currentCenterY - initialCenterY);
                 
-                if (zoomLevel === 1) {
+                if (tempZoom === 1) {
                     panX = 0;
                     panY = 0;
                 }
-                updateImageTransform();
+                
+                zoomLevel = tempZoom;
+                updateImageTransform(false);
             } else if (e.touches.length === 1 && isDragging && zoomLevel > 1) {
                 // Panning
                 e.preventDefault();
+                const dx = e.touches[0].clientX - startX - panX;
+                const dy = e.touches[0].clientY - startY - panY;
+                if (Math.abs(dx) > 3 || Math.abs(dy) > 3) {
+                    touchDragMoved = true;
+                }
                 panX = e.touches[0].clientX - startX;
                 panY = e.touches[0].clientY - startY;
-                updateImageTransform();
+                updateImageTransform(false);
             }
         }, { passive: false });
         
@@ -553,8 +597,24 @@
             }
             if (e.touches.length === 0) {
                 isDragging = false;
+                
+                // Detect Double Tap for zoom in/out
+                if (!touchDragMoved && zoomLevel >= 1) {
+                    const currentTime = new Date().getTime();
+                    const tapLength = currentTime - lastTapTime;
+                    if (tapLength < 300 && tapLength > 0) {
+                        // Double tap
+                        if (zoomLevel === 1) {
+                            performZoom(2.5, e.changedTouches[0].clientX, e.changedTouches[0].clientY, true);
+                        } else {
+                            performZoom(1, e.changedTouches[0].clientX, e.changedTouches[0].clientY, true);
+                        }
+                        lastTapTime = 0;
+                    } else {
+                        lastTapTime = currentTime;
+                    }
+                }
             } else if (e.touches.length === 1 && zoomLevel > 1) {
-                // Switch to drag seamlessly if one finger remains
                 isDragging = true;
                 startX = e.touches[0].clientX - panX;
                 startY = e.touches[0].clientY - panY;
