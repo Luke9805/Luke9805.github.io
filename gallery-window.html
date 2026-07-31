@@ -388,8 +388,13 @@
             panY = 0;
             fsImage.style.cursor = 'zoom-in';
 
+            // Calcola la scala esatta per far combaciare l'immagine con il thumbnail corrente
+            // (il thumbnail potrebbe aver perso lo stato di :hover o la finestra potrebbe essere stata ridimensionata)
+            const oldWidth = parseFloat(fsImage.style.width);
+            const targetScaleX = oldWidth > 0 ? (rect.width / oldWidth) : 1;
+
             fsImage.style.transition = 'transform 0.4s cubic-bezier(0.25, 1, 0.5, 1)';
-            fsImage.style.transform = `translate(${rect.left}px, ${rect.top}px) scale(1)`;
+            fsImage.style.transform = `translate(${rect.left}px, ${rect.top}px) scale(${targetScaleX})`;
 
             // Restore original thumbnail after animation
             setTimeout(() => {
