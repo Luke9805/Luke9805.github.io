@@ -339,6 +339,9 @@
             fsViewer.classList.add('active');
             thumbImg.style.opacity = '0'; // Hide original
 
+            document.body.style.overflow = 'hidden'; // Evita scroll del background
+            history.pushState({ fullscreen: true }, "");
+
             // Force reflow
             fsImage.offsetHeight;
 
@@ -375,10 +378,16 @@
             };
         }
 
-        function closeFullscreen() {
+        function closeFullscreen(fromPopState = false) {
             if (!isFullscreen || !activeThumbnailDiv) return;
             isFullscreen = false;
             
+            if (fromPopState !== true) {
+                history.back();
+            }
+
+            document.body.style.overflow = ''; // Ripristina scroll del background
+
             fsViewer.classList.remove('active');
             fsSpinner.style.opacity = '0';
 
@@ -392,13 +401,8 @@
             fsImage.style.cursor = 'zoom-in';
 
             // Calcola la scala esatta per far combaciare l'immagine con il thumbnail corrente
-            // (il thumbnail potrebbe aver perso lo stato di :hover o la finestra potrebbe essere stata ridimensionata)
             const oldWidth = parseFloat(fsImage.style.width);
             const targetScaleX = oldWidth > 0 ? (rect.width / oldWidth) : 1;
-
-            // Evita salti di aspect-ratio reimpostando l'immagine a bassa risoluzione e cover
-            fsImage.src = thumbImg.src;
-            fsImage.style.objectFit = 'cover';
 
             fsImage.style.transition = 'transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), border-radius 0.4s ease';
             fsImage.style.borderRadius = '8px';
@@ -414,6 +418,12 @@
                 }
             }, 400);
         }
+
+        window.addEventListener('popstate', (e) => {
+            if (isFullscreen) {
+                closeFullscreen(true);
+            }
+        });
 
         fsCloseBtn.addEventListener('click', closeFullscreen);
 
